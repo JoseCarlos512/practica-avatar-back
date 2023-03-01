@@ -19,9 +19,6 @@ public class Actores {
 	private String created;
 	private String edited;
 	
-	
-	
-	
 	public Actores() {
 	}
 	

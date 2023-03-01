@@ -55,23 +55,4 @@ public class peliculasRestController {
         
         return actores;
     }
-	
-	@GetMapping("/pelicula/actores")
-	public List<Pelicula> getListaPeliculasActores() throws JsonMappingException, JsonProcessingException {
-        String mStrPeliculas = PeliculaService.getServicePeliculas();
-        
-        List<Pelicula> listaPelicula = new ArrayList<>();
-      
-        JSONObject jsonObject = new JSONObject(mStrPeliculas);
-        JSONArray jsonArray = jsonObject.getJSONArray("results");
-        
-        for (int i = 0; i < jsonArray.length(); i++) {
-        	
-        	Pelicula pelicula = new ObjectMapper().readValue(jsonObject.getJSONArray("results").get(i).toString(), Pelicula.class);
-        	
-        	listaPelicula.add(pelicula);
-        }
-        
-        return listaPelicula;
-    }
 }
