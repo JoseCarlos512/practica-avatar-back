@@ -8,12 +8,14 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.proyecto.avatar.jose.leon.demo.entity.Actores;
 import com.proyecto.avatar.jose.leon.demo.entity.Pelicula;
 import com.proyecto.avatar.jose.leon.demo.service.PeliculaService;
 
@@ -33,7 +35,7 @@ public class peliculasRestController {
         
         for (int i = 0; i < jsonArray.length(); i++) {
         	
-        	Pelicula pelicula = new ObjectMapper().readValue(jsonObject.getJSONArray("results").get(i).toString(), Pelicula.class);
+        	Pelicula pelicula = new ObjectMapper().readValue(jsonArray.get(i).toString(), Pelicula.class);
         	
         	listaPelicula.add(pelicula);
         }
@@ -41,23 +43,17 @@ public class peliculasRestController {
         return listaPelicula;
     }
 	
-	@GetMapping("/actores")
-	public List<Pelicula> getListaActores() throws JsonMappingException, JsonProcessingException {
-        String mStrPeliculas = PeliculaService.getServicePeliculas();
+	@GetMapping("/actor/{id}")
+	public Actores getListaActores(@PathVariable Long id) throws JsonMappingException, JsonProcessingException {
+        String mStrActores = PeliculaService.getServiceActores(id.toString());
         
-        List<Pelicula> listaPelicula = new ArrayList<>();
+        List<Pelicula> l = new ArrayList<>();
       
-        JSONObject jsonObject = new JSONObject(mStrPeliculas);
-        JSONArray jsonArray = jsonObject.getJSONArray("results");
+        JSONObject jsonObject = new JSONObject(mStrActores);
         
-        for (int i = 0; i < jsonArray.length(); i++) {
-        	
-        	Pelicula pelicula = new ObjectMapper().readValue(jsonObject.getJSONArray("results").get(i).toString(), Pelicula.class);
-        	
-        	listaPelicula.add(pelicula);
-        }
+        Actores actores = new ObjectMapper().readValue(jsonObject.toString(), Actores.class);
         
-        return listaPelicula;
+        return actores;
     }
 	
 	@GetMapping("/pelicula/actores")
